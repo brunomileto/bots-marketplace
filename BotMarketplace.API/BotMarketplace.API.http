@@ -1,0 +1,6 @@
+@BotMarketplace.API_HostAddress = http://localhost:5123
+
+GET {{BotMarketplace.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

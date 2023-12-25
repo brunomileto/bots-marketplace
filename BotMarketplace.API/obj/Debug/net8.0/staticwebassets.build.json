@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "dV4zuUyZacuwfKJ3cUvA+6Qz8kqvXhbtTOFNWGQzQ+E=",
+  "Source": "BotMarketplace.API",
+  "BasePath": "_content/BotMarketplace.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

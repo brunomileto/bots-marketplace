@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BotMarketplace.API</name>
+    </assembly>
+    <members>
+        <member name="M:BotMarketplace.API.Controllers.BasicController`3.GetAll(System.Int32,System.Int32)">
+             <summary>
+             Get all itens paginated
+             </summary>
+             <param name="pageNumber">Number of the page</param>
+             <param name="perPage">Quantity of itens returned</param>
+             <returns>Paginated information and the itens found</returns>
+             <remarks>
+             Sample request:
+            
+                 GET /api/products
+                 {
+                    "pageNumber": 1,
+                    "perPage": 5,
+                 }
+            
+             </remarks>
+             <response code="200">Returns the paginated information and itens found, if any</response>
+        </member>
+        <member name="M:BotMarketplace.API.Controllers.BasicController`3.GetById(System.String)">
+            <summary>
+            Retrieves a specific item by ID.
+            </summary>
+            <param name="id">The ID of the item to retrieve</param>
+            <returns>The requested item if found</returns>
+            <response code="200">Returns the requested item</response>
+            <response code="404">If the item with the specified ID is not found</response>
+        </member>
+        <member name="M:BotMarketplace.API.Controllers.BasicController`3.Create(`0)">
+             <summary>
+             Creates a new item.
+             </summary>
+             <param name="dto">The data transfer object containing the item's data</param>
+             <returns>A newly created item</returns>
+             <remarks>
+             Sample request:
+            
+                 POST /api/products
+                 {
+                     "name": "a name",
+                     "email": "email@email.com"
+                 }
+            
+             </remarks>
+             <response code="201">Returns the newly created item</response>
+             <response code="400">If the item is null or invalid</response>
+        </member>
+        <member name="M:BotMarketplace.API.Controllers.BasicController`3.Update(System.String,`0)">
+            <summary>
+            Updates an existing item.
+            </summary>
+            <param name="id">The ID of the item to update</param>
+            <param name="dto">The data transfer object containing the updated data</param>
+            <returns>No content</returns>
+            <response code="204">If the item was updated successfully</response>
+            <response code="400">If the item is null or invalid</response>
+            <response code="404">If the item with the specified ID is not found</response>
+        </member>
+        <member name="M:BotMarketplace.API.Controllers.BasicController`3.Delete(System.String)">
+            <summary>
+            Deletes a specific item by ID.
+            </summary>
+            <param name="id">The ID of the item to delete</param>
+            <returns>No content</returns>
+            <response code="204">If the item was deleted successfully</response>
+            <response code="404">If the item with the specified ID is not found</response>
+        </member>
+        <member name="M:BotMarketplace.API.Controllers.ProductController.Create(BotMarketplace.API.DTOs.Products.ProductBaseDTO)">
+             <summary>
+             Creates a new product.
+             </summary>
+             <param name="Name">The produt name</param>
+             <param name="Description">The product description</param>
+             <param name="Price">The product Price</param>
+             <param name="CreatorId">The ID of the product creator</param>
+             <returns>A newly created product</returns>
+             <remarks>
+             Sample request:
+            
+                 POST /api/products
+                 {
+                     "Name": "Sample Product",
+                     "Description": "Product Description",
+                     "Price": 99.99,
+                     "CreatorId": "the-creator-id"
+                 }
+            
+             </remarks>
+             <response code="201">Returns the newly created product</response>
+             <response code="400">If the product is null or invalid</response>
+        </member>
+        <member name="T:BotMarketplace.API.DTOs.Products.ProductBaseDTO">
+            <summary>
+            Data Transfer Object representing a product.
+            </summary>
+        </member>
+        <member name="P:BotMarketplace.API.DTOs.Products.ProductBaseDTO.Name">
+            <summary>
+            Gets or sets the name of the product.
+            Required. The name should be unique and descriptive.
+            </summary>
+            <example>SuperWidget</example>
+        </member>
+        <member name="P:BotMarketplace.API.DTOs.Products.ProductBaseDTO.Description">
+            <summary>
+            Gets or sets a detailed description of the product.
+            Required. This should provide information about the product's features.
+            </summary>
+            <example>This widget can perform super actions.</example>
+        </member>
+        <member name="P:BotMarketplace.API.DTOs.Products.ProductBaseDTO.Price">
+            <summary>
+            Gets or sets the price of the product.
+            Required. The price must be a positive value.
+            </summary>
+            <example>99.99</example>
+        </member>
+        <member name="P:BotMarketplace.API.DTOs.Products.ProductBaseDTO.CreatorId">
+            <summary>
+            Gets or sets the ID of the creator of the product.
+            Required. This should be the unique identifier of the creator.
+            </summary>
+            <example>creator123</example>
+        </member>
+    </members>
+</doc>
