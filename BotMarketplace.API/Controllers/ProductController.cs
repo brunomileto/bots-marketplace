@@ -5,13 +5,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BotMarketplace.API.Controllers
 {
+    /// <summary>
+    /// Handles product-related operations
+    /// </summary>
     [ApiController]
-    [Route("/api/products")]
+    [Route("/api/[controller]")]
     public class ProductController : BasicController<ProductBaseDTO, Product, IProductService>
     {
         private readonly ILogger<ProductController> _logger;
         private readonly IProductService _service;
 
+        /// <summary>
+        /// Initializes a new instance of the ProductController.
+        /// </summary>
+        /// <param name="logger">The logger for capturing logs.</param>
+        /// <param name="service">The product service for business logic.</param>
         public ProductController(ILogger<ProductController> logger, IProductService service) : base(service)
         {
             _logger = logger;
@@ -29,7 +37,7 @@ namespace BotMarketplace.API.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST /api/products
+        ///     POST /api/product
         ///     {
         ///         "Name": "Sample Product",
         ///         "Description": "Product Description",
@@ -46,6 +54,11 @@ namespace BotMarketplace.API.Controllers
             return await base.Create(dto);
         }
 
+        /// <summary>
+        /// Maps a ProductBaseDTO to a Product model.
+        /// </summary>
+        /// <param name="dto">The ProductBaseDTO containing the data for the transaction.</param>
+        /// <returns>The Product model populated with data from the DTO.</returns>
         protected override Product MapToModel(ProductBaseDTO dto)
         {
             var product = new Product
@@ -59,6 +72,11 @@ namespace BotMarketplace.API.Controllers
             return product;
         }
 
+        /// <summary>
+        /// Updates a Product model using data from a ProductBaseDTO.
+        /// </summary>
+        /// <param name="model">The existing Product model to update.</param>
+        /// <param name="dto">The ProductBaseDTO containing updated data for the transaction.</param>
         protected override void UpdateModel(Product model, ProductBaseDTO dto)
         {
             model.Name = dto.Name;
