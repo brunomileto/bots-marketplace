@@ -23,14 +23,22 @@ namespace BotMarketplace.Core.Models
         [Required]
         public decimal Price { get; set; }
 
-        public Transaction ()
+        public Transaction (string productId, string buyerId, string sellerId, decimal price)
         {
             TransactionDate = DateTime.UtcNow;
+            ProductId = productId;
+            BuyerId = buyerId;
+            SellerId = sellerId;
+            Price = price;
         }
 
-        public Transaction(DateTime transactionDate)
+        public Transaction(string productId, string buyerId, string sellerId, decimal price, DateTime transactionDate)
         {
             TransactionDate = transactionDate;
+            ProductId = productId;
+            SellerId = sellerId;
+            BuyerId = buyerId;
+            Price = price;
         }
     }
 }
