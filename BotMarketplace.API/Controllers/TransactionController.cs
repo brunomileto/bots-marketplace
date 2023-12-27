@@ -39,9 +39,9 @@ namespace BotMarketplace.API.Controllers
         /// 
         ///     POST /api/transaction
         ///     {
-        ///         "ProductId: "the-product-id"
-        ///         "BuyerId": "the-user-id-of-the-buyer"
-        ///         "SellerId": "the-user-id-of-the-seller"
+        ///         "ProductId: "the-product-id",
+        ///         "BuyerId": "the-user-id-of-the-buyer",
+        ///         "SellerId": "the-user-id-of-the-seller",
         ///         "Price": 99.99
         ///      }
         ///      
