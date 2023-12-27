@@ -3,19 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotMarketplace.Web", "BotMarkeplace.Web\BotMarketplace.Web.csproj", "{506F8C74-4C78-4DE2-BCFF-CC154869086A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotMarketplace.Web", "BotMarkeplace.Web\BotMarketplace.Web.csproj", "{506F8C74-4C78-4DE2-BCFF-CC154869086A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotMarketplace.Core", "BotMarketplace.Core\BotMarketplace.Core.csproj", "{6FA23F0E-385C-4115-A9D7-581B1D52E5F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotMarketplace.Core", "BotMarketplace.Core\BotMarketplace.Core.csproj", "{6FA23F0E-385C-4115-A9D7-581B1D52E5F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotMarketplace.Services", "BotMarketplace.Services\BotMarketplace.Services.csproj", "{6652DFED-0AD0-4757-89AC-C2351E240E6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotMarketplace.Services", "BotMarketplace.Services\BotMarketplace.Services.csproj", "{6652DFED-0AD0-4757-89AC-C2351E240E6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotMarketplace.Infrastructure", "BotMarketplace.Infrastructure\BotMarketplace.Infrastructure.csproj", "{C6DA466A-106E-4B0C-AE64-991C0F486C0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotMarketplace.Infrastructure", "BotMarketplace.Infrastructure\BotMarketplace.Infrastructure.csproj", "{C6DA466A-106E-4B0C-AE64-991C0F486C0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotMarketplace.Common", "BotMarketplace.Common\BotMarketplace.Common.csproj", "{683C1D11-2487-448C-AAD4-8400B1427AD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotMarketplace.Common", "BotMarketplace.Common\BotMarketplace.Common.csproj", "{683C1D11-2487-448C-AAD4-8400B1427AD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotMarketplace.Tests", "BotMarketplace.Tests\BotMarketplace.Tests.csproj", "{F0BB3124-F7F4-4B9E-AF83-901CF020FED2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotMarketplace.Tests", "BotMarketplace.Tests\BotMarketplace.Tests.csproj", "{F0BB3124-F7F4-4B9E-AF83-901CF020FED2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotMarketplace.API", "BotMarketplace.API\BotMarketplace.API.csproj", "{E5A0770F-AE30-41A0-8676-5DA603C61370}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotMarketplace.API", "BotMarketplace.API\BotMarketplace.API.csproj", "{E5A0770F-AE30-41A0-8676-5DA603C61370}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{32784764-1A3C-40E2-B170-F4727EE37207}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

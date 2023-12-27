@@ -396,3 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/BotMarketplace.API/BotMarketplace.API.csproj.user
