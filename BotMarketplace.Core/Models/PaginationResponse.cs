@@ -24,5 +24,7 @@ namespace BotMarketplace.Core.Models
             TotalPages = (int)Math.Ceiling(count / (double)perPage);
             Items = items;
         }
+
+        public PaginationResponse() { }
     }
 }
