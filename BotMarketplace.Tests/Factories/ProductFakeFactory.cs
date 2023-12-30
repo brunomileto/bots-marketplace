@@ -7,13 +7,13 @@ using Bogus;
 using BotMarketplace.Core.Enums;
 using BotMarketplace.Core.Models;
 
-namespace BotMarketplace.Tests.BotMarketplace.Infrastructure.Factories
+namespace BotMarketplace.Tests.Factories
 {
     public static class ProductFakeFactory
     {
         public static List<User> users = default!;
 
-        public static List<Product> FakeProducts (int usersQtd = 2, int botsQtd = 5)
+        public static List<Product> FakeProducts(int usersQtd = 2, int botsQtd = 5)
         {
             var botFaker = FakeProductMaker(usersQtd);
 

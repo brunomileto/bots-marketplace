@@ -9,7 +9,6 @@ using BotMarketplace.Core.Models;
 using BotMarketplace.Infrastructure.Repositories.Implementations;
 using BotMarketplace.Infrastructure.Repositories.Interfaces;
 using BotMarketplace.Services.Implementations;
-using BotMarketplace.Tests.BotMarketplace.Infrastructure.Factories;
 using Moq;
 
 namespace BotMarketplace.Tests.BotMarketplace.Services

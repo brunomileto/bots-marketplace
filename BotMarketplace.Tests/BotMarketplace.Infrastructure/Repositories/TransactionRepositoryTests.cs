@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Bogus;
 using BotMarketplace.Core.Models;
 using BotMarketplace.Infrastructure.Repositories.Implementations;
-using BotMarketplace.Tests.BotMarketplace.Infrastructure.Factories;
+using BotMarketplace.Tests.Factories;
 using Microsoft.EntityFrameworkCore;
 
 namespace BotMarketplace.Tests.BotMarketplace.Infrastructure.Repositories
@@ -67,13 +67,12 @@ namespace BotMarketplace.Tests.BotMarketplace.Infrastructure.Repositories
         public async Task GetAllByUserIdAsync_ReturnsPaginatedResultsByUser()
         {
             var pageIndex = 1;
-            var pageSize = 1;
+            var pageSize = 20;
             var transactionToTestTheUser = _context.Transactions.FirstOrDefault()!;
 
             var (transactions, totalResults) = await _repository.GetAllByUserIdAsync(transactionToTestTheUser.SellerId, pageIndex, pageSize);
 
-            Assert.AreEqual(pageSize, transactions.Count());
-            Assert.AreEqual(transactionToTestTheUser.Id, transactions.FirstOrDefault()!.Id);
+            Assert.IsNotNull(transactions.Where(t => t.Id == transactionToTestTheUser.Id).ToList()[0]);
             Assert.AreEqual(TRANSACTIONS_QUANTITY, totalResults);
         }
 

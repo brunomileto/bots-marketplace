@@ -7,7 +7,7 @@ using Bogus;
 using BotMarketplace.Core.Models;
 using BotMarketplace.Infrastructure.Data;
 using BotMarketplace.Infrastructure.Repositories.Implementations;
-using BotMarketplace.Tests.BotMarketplace.Infrastructure.Factories;
+using BotMarketplace.Tests.Factories;
 using Microsoft.EntityFrameworkCore;
 
 namespace BotMarketplace.Tests.BotMarketplace.Infrastructure.Repositories

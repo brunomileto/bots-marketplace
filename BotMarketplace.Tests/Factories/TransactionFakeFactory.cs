@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Bogus;
 using BotMarketplace.Core.Models;
 
-namespace BotMarketplace.Tests.BotMarketplace.Infrastructure.Factories
+namespace BotMarketplace.Tests.Factories
 {
     public static class TransactionFakeFactory
     {
@@ -27,12 +27,15 @@ namespace BotMarketplace.Tests.BotMarketplace.Infrastructure.Factories
             products = ProductFakeFactory.FakeProductMaker().Generate(productsQtd);
 
             var transactionFaker = new Faker<Transaction>()
-                .RuleFor(t => t.Id, f => f.Random.Uuid().ToString())
-                .RuleFor(t => t.TransactionDate, f => f.Date.Past())
-                .RuleFor(t => t.Price, f => f.Random.Decimal(10, 9999))
-                .RuleFor(t => t.ProductId, f => f.PickRandom(products).Id)
-                .RuleFor(t => t.SellerId, f => f.PickRandom(products).CreatorId)
-                .RuleFor(t => t.BuyerId, f => f.PickRandom(users).Id);
+                .CustomInstantiator(f => new Transaction(
+                    f.PickRandom(products).Id,
+                    f.PickRandom(users).Id,
+                    f.PickRandom(products).CreatorId,
+                    f.Random.Decimal(10, 9999),
+                    f.Date.Past(),
+                    f.Random.Uuid().ToString(),
+                    f.Date.Past()
+                    ));
 
             return transactionFaker;
 
