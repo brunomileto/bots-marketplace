@@ -40,5 +40,14 @@ namespace BotMarketplace.Core.Models
             BuyerId = buyerId;
             Price = price;
         }
+
+        public Transaction(string productId, string buyerId, string sellerId, decimal price, DateTime transactionDate, string id, DateTime dateCreated) : base(id, dateCreated)
+        {
+            ProductId = productId;
+            BuyerId = buyerId;
+            SellerId = sellerId;
+            TransactionDate = transactionDate;
+            Price = price;
+        }
     }
 }
