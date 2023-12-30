@@ -45,5 +45,12 @@ namespace BotMarketplace.Core.Models
         /// <example>creator123</example>
         [Required]
         public string CreatorId { get; set; }
+
+        public EnumProductType ProductType { get; set; }
+
+        public Product()
+        {
+            ProductType = EnumProductType.BOT;
+        }
     }
 }
