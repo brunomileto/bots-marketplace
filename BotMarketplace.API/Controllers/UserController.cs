@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BotMarketplace.API.Controllers;
 
 [ApiController]
-[Route("/api/[controller]")]
+[Route("/api/v1/[controller]")]
 public class UserController : BasicController<UserBaseDTO, User, IUserService>
 {
     private readonly ILogger<UserController> _logger;

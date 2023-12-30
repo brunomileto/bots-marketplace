@@ -10,5 +10,6 @@ namespace BotMarketplace.API.DTOs.Users
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
     }
 }

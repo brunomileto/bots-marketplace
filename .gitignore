@@ -435,3 +435,5 @@ FodyWeavers.xsd
 /BotMarketplace.Infrastructure/bin/Debug/net8.0/BotMarketplace.Core.pdb
 /BotMarketplace.Infrastructure/bin/Debug/net8.0/BotMarketplace.Infrastructure.dll
 /BotMarketplace.Infrastructure/bin/Debug/net8.0/BotMarketplace.Infrastructure.pdb
+/BotMarketplace.Core/bin/Debug/net8.0/BotMarketplace.Core.dll
+/BotMarketplace.Core/bin/Debug/net8.0/BotMarketplace.Core.pdb
