@@ -9,7 +9,7 @@ namespace BotMarketplace.API.Controllers
     /// Handles product-related operations
     /// </summary>
     [ApiController]
-    [Route("/api/[controller]")]
+    [Route("/api/v1/[controller]")]
     public class ProductController : BasicController<ProductBaseDTO, Product, IProductService>
     {
         private readonly ILogger<ProductController> _logger;
