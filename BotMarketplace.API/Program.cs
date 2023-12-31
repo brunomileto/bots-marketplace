@@ -15,14 +15,11 @@ namespace BotMarketplace.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
-            // Add services to the container.
 
+            // Add services to the container.
             builder.Services.AddControllers();
-            builder.Services.AddScoped<IProductRepository, ProductRepository>();
-            builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
-            builder.Services.AddScoped<IUserService, UserService>();
+            AddServices(ref builder);
+            AddRepositories(ref builder);
 
             builder.Services.AddDbContext<MarketplaceContext>(options => options.UseInMemoryDatabase("MarketplaceDatabase"));
 
@@ -52,6 +49,19 @@ namespace BotMarketplace.API
             app.MapControllers();
 
             app.Run();
+        }
+
+        private static void AddRepositories(ref WebApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+        }
+
+        private static void AddServices(ref WebApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IProductService, ProductService>();
         }
     }
 }
