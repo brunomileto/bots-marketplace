@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BotMarketplace.Core.Enums;
 
 namespace BotMarketplace.Core.Models
 {
@@ -23,6 +24,8 @@ namespace BotMarketplace.Core.Models
         [Required]
         public decimal Price { get; set; }
 
+        public EnumTransactionStatus Status { get; set; }
+
         public Transaction (string productId, string buyerId, string sellerId, decimal price)
         {
             TransactionDate = DateTime.UtcNow;
@@ -30,6 +33,7 @@ namespace BotMarketplace.Core.Models
             BuyerId = buyerId;
             SellerId = sellerId;
             Price = price;
+            Status = EnumTransactionStatus.Created;
         }
 
         public Transaction(string productId, string buyerId, string sellerId, decimal price, DateTime transactionDate)
@@ -39,6 +43,7 @@ namespace BotMarketplace.Core.Models
             SellerId = sellerId;
             BuyerId = buyerId;
             Price = price;
+            Status = EnumTransactionStatus.Created;
         }
 
         public Transaction(string productId, string buyerId, string sellerId, decimal price, DateTime transactionDate, string id, DateTime dateCreated) : base(id, dateCreated)
@@ -48,6 +53,7 @@ namespace BotMarketplace.Core.Models
             SellerId = sellerId;
             TransactionDate = transactionDate;
             Price = price;
+            Status = EnumTransactionStatus.Created;
         }
     }
 }
