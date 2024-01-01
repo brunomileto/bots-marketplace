@@ -22,5 +22,13 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
         {
             return UserFakeFactory.FakeUserBaseDTOMaker();
         }
+
+        public override string UpdateDto(ref UserBaseDTO dto)
+        {
+            var newName = "newName";
+            dto.Name = newName;
+
+            return newName;
+        }
     }
 }

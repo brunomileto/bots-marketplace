@@ -9,6 +9,7 @@ using Bogus;
 using BotMarketplace.API;
 using BotMarketplace.API.Controllers;
 using BotMarketplace.API.DTOs.Products;
+using BotMarketplace.API.DTOs.Users;
 using BotMarketplace.Tests.Factories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,12 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
         {
             return ProductFakeFactory.FakeProductBaseDTOMaker();
         }
+        public override string UpdateDto(ref ProductBaseDTO dto)
+        {
+            var newName = "newName";
+            dto.Name = newName;
 
+            return newName;
+        }
     }
 }
