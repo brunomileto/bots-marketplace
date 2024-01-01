@@ -2,7 +2,7 @@
 
 namespace BotMarketplace.API.DTOs.Users
 {
-    public class UserBaseDTO
+    public class UserBaseDTO : BaseDTO
     {
         [Required]
         public string Name { get; set; }

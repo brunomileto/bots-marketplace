@@ -5,7 +5,7 @@ namespace BotMarketplace.API.DTOs.Products
     /// <summary>
     /// Data Transfer Object representing a product.
     /// </summary>
-    public class ProductBaseDTO
+    public class ProductBaseDTO : BaseDTO
     {
         /// <summary>
         /// Gets or sets the name of the product.
