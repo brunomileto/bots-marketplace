@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Bogus;
 using BotMarketplace.API;
+using BotMarketplace.API.DTOs;
 using BotMarketplace.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
 {
     [TestClass]
     public abstract class BasicControllerTests<TDto, TController> 
-        where TDto : class
+        where TDto : BaseDTO
         where TController : ControllerBase
     {
         private readonly HttpClient _httpClient = default!;
@@ -35,6 +36,34 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
             return routeAttribute?.Template.Replace("[controller]", controllerName.ToLowerInvariant()) ?? string.Empty;
         }
 
+        public bool ItemExistsOnList(List<TDto> itemList, TDto itemToCheck)
+        {
+            var exists = false;
+            foreach (var item in itemList)
+            {
+                foreach (var prop in _dtoProperties)
+                {
+                    var propValueItem = prop.GetValue(item, null);
+                    var propValueItemToCheck = prop.GetValue(item, null);
+
+                    if (propValueItem == null && propValueItemToCheck == null)
+                        exists = true;
+                    else if (propValueItem != null && propValueItemToCheck != null)
+                        exists = propValueItem.Equals(propValueItemToCheck);
+
+                    if (!exists)
+                        break;
+                }
+
+                if (exists)
+                    return true;
+            }
+
+            return exists;
+        }
+
+        public abstract string UpdateDto(ref TDto dto);
+
         public BasicControllerTests()
         {
             var factory = new CustomWebApplicationFactory<Program>();
@@ -46,23 +75,22 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
             _dtoProperties = typeof(TDto).GetProperties().ToList();
         }
 
+        public abstract Faker<TDto> CreateFaker();
 
-        public virtual async Task<string> GetResponseId(HttpContent content)
+        private async Task<TDto> CreateDtoOnDb()
         {
-            string json = await content.ReadAsStringAsync();
-            using var document = JsonDocument.Parse(json);
-            JsonElement root = document.RootElement;
+            var createdDto = await (await _httpClient.PostAsJsonAsync(GetControllerRoute(), _dto)).Content.ReadFromJsonAsync<TDto>();
 
-            if (root.TryGetProperty("Id", out JsonElement Id))
-                return Id.GetString() ?? string.Empty;
-            
-            if (root.TryGetProperty("id", out JsonElement id))
-                return id.GetString() ?? string.Empty;
-
-            return string.Empty;
+            return createdDto!;
         }
 
-        public abstract Faker<TDto> CreateFaker();
+        private async Task<TDto?> GetDtoFromDb(string id)
+        {
+            var dto = await (await _httpClient.GetAsync($"{GetControllerRoute()}/{id}")).Content.ReadFromJsonAsync<TDto>();
+            if (dto == null || dto.Id == null)
+                return null;
+            return dto;
+        }
 
         [TestMethod]
         public async Task CreateDto_ShouldReturnCreated()
@@ -76,9 +104,8 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
             var createdDto = await response.Content.ReadFromJsonAsync<TDto>();
 
             Assert.IsNotNull(createdDto);
+            Assert.IsTrue(!string.IsNullOrEmpty(createdDto.Id));
 
-            foreach (var prop in _dtoProperties)
-                Assert.AreEqual(prop.GetValue(createdDto, null), prop.GetValue(newDto, null));
         }
 
         [TestMethod]
@@ -106,13 +133,9 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
         [TestMethod]
         public async Task GetById_ShouldReturnItem()
         {
-            var createdDtoResponse = await _httpClient.PostAsJsonAsync(GetControllerRoute(), _dto);
+            var createdDto = await CreateDtoOnDb();
 
-            var dtoId = await GetResponseId(createdDtoResponse.Content);
-
-            var createdDto = await createdDtoResponse.Content.ReadFromJsonAsync<TDto>();
-
-            var response = await _httpClient.GetAsync($"{GetControllerRoute()}/{dtoId}");
+            var response = await _httpClient.GetAsync($"{GetControllerRoute()}/{createdDto.Id}");
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
@@ -125,30 +148,37 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
 
         }
 
-        public bool ItemExistsOnList(List<TDto> itemList, TDto itemToCheck)
+        [TestMethod]
+        public async Task UpdateUser_ShouldReturnNoContent()
         {
-            var exists = false;
-            foreach (var item in itemList)
+            var dtoToUpdate = await CreateDtoOnDb();
+
+            var valueUpdated = UpdateDto(ref dtoToUpdate);
+
+            var response = await _httpClient.PutAsJsonAsync($"{GetControllerRoute()}/{dtoToUpdate.Id}", dtoToUpdate);
+
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.IsNotNull(dtoToUpdate.Id);
+
+            var updatedDto = await GetDtoFromDb(dtoToUpdate.Id);
+            Assert.IsNotNull(updatedDto);
+            foreach (var prop in _dtoProperties)
             {
-                foreach (var prop in _dtoProperties)
-                {
-                    var propValueItem = prop.GetValue(item, null);
-                    var propValueItemToCheck = prop.GetValue(item, null);
-
-                    if (propValueItem == null && propValueItemToCheck == null)
-                        exists = true;
-                    else if (propValueItem != null && propValueItemToCheck != null)
-                        exists = propValueItem.Equals(propValueItemToCheck);
-
-                    if (!exists)
-                        break;
-                }
-
-                if (exists)
-                    return true;
+                Assert.AreEqual(prop.GetValue(dtoToUpdate, null), prop.GetValue(updatedDto, null));
             }
+        }
 
-            return exists;
+        [TestMethod]
+        public async Task DeleteUser_ShouldReturnNoContent()
+        {
+            var createdDto = await CreateDtoOnDb();
+
+            var response = await _httpClient.DeleteAsync($"{GetControllerRoute()}/{createdDto.Id}");
+
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+
+            var deletedDto = await GetDtoFromDb(createdDto.Id!);
+            Assert.IsNull(deletedDto);
         }
     }
 }
