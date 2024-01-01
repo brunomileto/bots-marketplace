@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Bogus;
 using BotMarketplace.API;
@@ -20,7 +21,8 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
     {
         private readonly HttpClient _httpClient = default!;
         private Faker<TDto> _faker = default!;
-        private TDto _dto = default!;
+        public TDto _dto = default!;
+        private string _dtoId = default!;
         private List<PropertyInfo> _dtoProperties = default!;
         private readonly GetPaginatedParamsDelegate _getPaginatedParams = default!;
 
@@ -42,6 +44,22 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
             _faker = CreateFaker();
             _dto = _faker.Generate();
             _dtoProperties = typeof(TDto).GetProperties().ToList();
+        }
+
+
+        public virtual async Task<string> GetResponseId(HttpContent content)
+        {
+            string json = await content.ReadAsStringAsync();
+            using var document = JsonDocument.Parse(json);
+            JsonElement root = document.RootElement;
+
+            if (root.TryGetProperty("Id", out JsonElement Id))
+                return Id.GetString() ?? string.Empty;
+            
+            if (root.TryGetProperty("id", out JsonElement id))
+                return id.GetString() ?? string.Empty;
+
+            return string.Empty;
         }
 
         public abstract Faker<TDto> CreateFaker();
@@ -83,6 +101,28 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
             Assert.IsTrue(paginatedContent.Items.Count() > 0);
 
             Assert.IsTrue(ItemExistsOnList(paginatedContent.Items.ToList(), createdDto!));
+        }
+
+        [TestMethod]
+        public async Task GetById_ShouldReturnItem()
+        {
+            var createdDtoResponse = await _httpClient.PostAsJsonAsync(GetControllerRoute(), _dto);
+
+            var dtoId = await GetResponseId(createdDtoResponse.Content);
+
+            var createdDto = await createdDtoResponse.Content.ReadFromJsonAsync<TDto>();
+
+            var response = await _httpClient.GetAsync($"{GetControllerRoute()}/{dtoId}");
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
+            var userReturned = await response.Content.ReadFromJsonAsync<TDto>();
+
+            Assert.IsNotNull(userReturned);
+
+            foreach (var prop in _dtoProperties)
+                Assert.AreEqual(prop.GetValue(createdDto, null), prop.GetValue(createdDto, null));
+
         }
 
         public bool ItemExistsOnList(List<TDto> itemList, TDto itemToCheck)
