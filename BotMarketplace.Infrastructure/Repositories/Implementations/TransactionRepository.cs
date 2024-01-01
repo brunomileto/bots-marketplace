@@ -7,7 +7,7 @@ using BotMarketplace.Common.Extensions;
 using BotMarketplace.Core.Models;
 using BotMarketplace.Infrastructure.Data;
 using BotMarketplace.Infrastructure.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using BotMarketplace.Core.Enums;
 
 namespace BotMarketplace.Infrastructure.Repositories.Implementations
 {
@@ -51,12 +51,19 @@ namespace BotMarketplace.Infrastructure.Repositories.Implementations
 
         public async Task UpdateAsync(Transaction item)
         {
-            return;
+            _context.Transactions.Update(item);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(string id)
         {
-            return;
+            var transaction = await GetByIdAsync(id);
+
+            if (transaction != null)
+            {
+                transaction.Status = EnumTransactionStatus.Deleted;
+                await UpdateAsync(transaction);
+            }
         }
     }
 }

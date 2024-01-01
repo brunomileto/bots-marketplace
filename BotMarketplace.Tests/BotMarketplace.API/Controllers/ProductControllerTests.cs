@@ -18,11 +18,11 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
     [TestClass]
     public class ProductControllerTests : BasicControllerTests<ProductBaseDTO, ProductController>
     {
-        public override Faker<ProductBaseDTO> CreateFaker()
+        protected override Faker<ProductBaseDTO> CreateFaker()
         {
             return ProductFakeFactory.FakeProductBaseDTOMaker();
         }
-        public override string UpdateDto(ref ProductBaseDTO dto)
+        protected override string UpdateDto(ref ProductBaseDTO dto)
         {
             var newName = "newName";
             dto.Name = newName;

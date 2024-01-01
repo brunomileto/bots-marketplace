@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Bogus;
 using BotMarketplace.API;
 using BotMarketplace.API.DTOs;
+using BotMarketplace.Common.Extensions;
 using BotMarketplace.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,14 +21,14 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
         where TDto : BaseDTO
         where TController : ControllerBase
     {
-        private readonly HttpClient _httpClient = default!;
+        protected readonly HttpClient _httpClient = default!;
         private Faker<TDto> _faker = default!;
-        public TDto _dto = default!;
+        protected TDto _dto = default!;
         private string _dtoId = default!;
         private List<PropertyInfo> _dtoProperties = default!;
         private readonly GetPaginatedParamsDelegate _getPaginatedParams = default!;
 
-        public string GetControllerRoute()
+        protected string GetControllerRoute()
         {
             var controllerName = typeof(TController).Name.Replace("Controller", "");
             var routeAttribute = typeof(TController).GetCustomAttributes(typeof(RouteAttribute), true)
@@ -36,7 +37,7 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
             return routeAttribute?.Template.Replace("[controller]", controllerName.ToLowerInvariant()) ?? string.Empty;
         }
 
-        public bool ItemExistsOnList(List<TDto> itemList, TDto itemToCheck)
+        protected bool ItemExistsOnList(List<TDto> itemList, TDto itemToCheck)
         {
             var exists = false;
             foreach (var item in itemList)
@@ -62,7 +63,7 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
             return exists;
         }
 
-        public abstract string UpdateDto(ref TDto dto);
+        protected abstract string UpdateDto(ref TDto dto);
 
         public BasicControllerTests()
         {
@@ -75,16 +76,16 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
             _dtoProperties = typeof(TDto).GetProperties().ToList();
         }
 
-        public abstract Faker<TDto> CreateFaker();
+        protected abstract Faker<TDto> CreateFaker();
 
-        private async Task<TDto> CreateDtoOnDb()
+        protected async Task<TDto> CreateDtoOnDb()
         {
             var createdDto = await (await _httpClient.PostAsJsonAsync(GetControllerRoute(), _dto)).Content.ReadFromJsonAsync<TDto>();
 
             return createdDto!;
         }
 
-        private async Task<TDto?> GetDtoFromDb(string id)
+        protected async Task<TDto?> GetDtoFromDb(string id)
         {
             var dto = await (await _httpClient.GetAsync($"{GetControllerRoute()}/{id}")).Content.ReadFromJsonAsync<TDto>();
             if (dto == null || dto.Id == null)
@@ -93,12 +94,12 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
         }
 
         [TestMethod]
-        public async Task CreateDto_ShouldReturnCreated()
+        protected virtual async Task CreateDto_ShouldReturnCreated()
         {
             var newDto = _faker.Generate();
 
             var response = await _httpClient.PostAsJsonAsync(GetControllerRoute(), newDto);
-
+            var json = await response.Content.ReadAsStringAsync();
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             
             var createdDto = await response.Content.ReadFromJsonAsync<TDto>();
@@ -109,7 +110,7 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
         }
 
         [TestMethod]
-        public async Task GetAllDto_ShouldReturnOk()
+        protected virtual async Task GetAllDto_ShouldReturnOk()
         {
             var pageNumber = 1;
             var perPage = 2;
@@ -131,7 +132,7 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
         }
 
         [TestMethod]
-        public async Task GetById_ShouldReturnItem()
+        protected virtual async Task GetById_ShouldReturnItem()
         {
             var createdDto = await CreateDtoOnDb();
 
@@ -149,7 +150,7 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
         }
 
         [TestMethod]
-        public async Task UpdateUser_ShouldReturnNoContent()
+        protected virtual async Task UpdateUser_ShouldReturnNoContent()
         {
             var dtoToUpdate = await CreateDtoOnDb();
 
@@ -169,7 +170,7 @@ namespace BotMarketplace.Tests.BotMarketplace.API.Controllers
         }
 
         [TestMethod]
-        public async Task DeleteUser_ShouldReturnNoContent()
+        protected virtual async Task DeleteUser_ShouldReturnNoContent()
         {
             var createdDto = await CreateDtoOnDb();
 
